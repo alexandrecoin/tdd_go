@@ -87,23 +87,30 @@ func TestSumAllItemsOfArray(t *testing.T) {
 }
 
 func TestSliceArray(t *testing.T) {
-	exampleSlice := []string{"Alex", "Jeannette", "Mochi", "Quiconque"}
-	fromValue := 2
-	toValue := 0
-	result := SliceArray(exampleSlice, fromValue, toValue)
+	assertFuncCheck := func(t *testing.T, expectedResult, result []string) {
+		t.Helper()
+		if !reflect.DeepEqual(result, expectedResult) {
+			t.Errorf("Expected %v but got %v", expectedResult, result)
+		}
+	}
 
-	if fromValue > toValue {
-		expectedResult := []string{"Alex", "Jeannette", "Mochi", "Quiconque"}
-		if !reflect.DeepEqual(result, expectedResult) {
-			t.Errorf("Expected %v but got %v", expectedResult, result)
-		}
-	}
-	if fromValue < toValue {
+	t.Run("It returns initial array if fromValue is greater than toValue", func(t *testing.T) {
+		exampleSlice := []string{"Alex", "Jeannette", "Mochi", "♥️"}
+		fromValue := 2
+		toValue := 0
+		result := SliceArray(exampleSlice, fromValue, toValue)
+		expectedResult := []string{"Alex", "Jeannette", "Mochi", "♥️"}
+		assertFuncCheck(t, expectedResult, result)
+	})
+
+	t.Run("It returns sliced array if fromValue is smaller than toValue", func(t *testing.T) {
+		exampleSlice := []string{"Alex", "Jeannette", "Mochi", "♥️"}
+		fromValue := 0
+		toValue := 3
+		result := SliceArray(exampleSlice, fromValue, toValue)
 		expectedResult := []string{"Alex", "Jeannette", "Mochi"}
-		if !reflect.DeepEqual(result, expectedResult) {
-			t.Errorf("Expected %v but got %v", expectedResult, result)
-		}
-	}
+		assertFuncCheck(t, expectedResult, result)
+	})
 }
 
 func TestCopySlice(t *testing.T) {
