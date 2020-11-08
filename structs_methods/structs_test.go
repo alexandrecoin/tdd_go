@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestPerimeter(t * testing.T) {
+func TestPerimeter(t *testing.T) {
 	rectangle := Rectangle{10.0, 12.0}
 	result := Perimeter(rectangle)
 	expectedResult := 44.0
@@ -14,17 +14,21 @@ func TestPerimeter(t * testing.T) {
 func TestArea(t *testing.T) {
 
 	areaTests := []struct {
-		shape Shape
+		name           string
+		shape          Shape
 		expectedResult float64
-	} {
-		{ Rectangle {12, 6}, 72.0 },
-		{ Circle {10}, 314.1592653589793 },
+	}{
+		{name: "Rectangle", shape: Rectangle{Width: 12, Height: 6}, expectedResult: 72.0},
+		{name: "Circle", shape: Circle{Radius: 10}, expectedResult: 314.1592653589793},
+		{name: "Triangle", shape: Triangle{Base: 12, Height: 6}, expectedResult: 36.0},
 	}
 
 	for _, item := range areaTests {
-		result := item.shape.Area()
-		if item.expectedResult != result {
-			t.Errorf("Expected %g but got %g result", item.expectedResult, result)
-		}
+		t.Run(item.name, func(t *testing.T) {
+			result := item.shape.Area()
+			if item.expectedResult != result {
+				t.Errorf("%#v - Expected %g but got %g result", item.shape, item.expectedResult, result)
+			}
+		})
 	}
 }
