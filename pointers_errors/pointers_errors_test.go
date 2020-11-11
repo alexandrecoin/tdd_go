@@ -5,6 +5,7 @@ import "testing"
 func TestWallet(t *testing.T) {
 
 	t.Run("Deposit", func(t *testing.T) {
+		t.Parallel()
 		wallet := Wallet{}
 		wallet.Deposit(Bitcoin(10))
 		
@@ -12,6 +13,7 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("Withdraw with sufficient funds", func(t *testing.T) {
+		t.Parallel()
 		wallet := Wallet{Bitcoin(10)}
 		err := wallet.Withdraw(Bitcoin(5))
 
@@ -20,6 +22,7 @@ func TestWallet(t *testing.T) {
 	})
 
 	t.Run("Withdraw insufficient funds", func(t *testing.T) {
+		t.Parallel()
 		startingBalance := Bitcoin(20)
 		wallet := Wallet{startingBalance}
 		err := wallet.Withdraw(Bitcoin(50))
