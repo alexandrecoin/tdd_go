@@ -4,10 +4,16 @@ import "errors"
 
 type Dictionary map[string]string
 
-var (
-	ErrNotFound = errors.New("Could not find the word you are looking for.")
-	ErrWordExists = errors.New("This entry already exists")
+const (
+	ErrNotFound = ErrDictionary("Could not find the word you are looking for.")
+	ErrWordExists = ErrDictionary("This entry already exists")
 )
+
+type ErrDictionary string
+
+func (e ErrDictionary) Error() string {
+	return string(e)
+}
 
 func (d Dictionary) Search(entry string) (string, error) {
 	definition, isWordFound := d[entry]
@@ -28,6 +34,6 @@ func (d Dictionary) AddEntry(entry, definition string) error {
 	default:
 		return err
 	}
-	
+
 	return nil
 }
