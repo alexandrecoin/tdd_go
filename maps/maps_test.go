@@ -43,6 +43,30 @@ func TestAddEntry(t *testing.T) {
 	})
 }
 
+func TestUpdateEntry(t *testing.T) {
+	t.Run("Already existing entry", func (t *testing.T) {
+		t.Parallel()
+		entry := "test"
+		definition := "This is just a test"
+		newDefinition := "This is a new definition"
+		dictionary := Dictionary{entry: definition}
+		err := dictionary.UpdateEntry(entry, newDefinition)
+
+		assertError(t, err, nil)
+		assertDefinition(t, dictionary, entry, newDefinition)
+	})
+
+	t.Run("New entry", func (t *testing.T) {
+		t.Parallel()
+		entry := "word"
+		definition := "This is just a test"
+		dictionary := Dictionary{}
+		err :=	dictionary.UpdateEntry(entry, definition)
+
+		assertError(t, err, ErrWordDoesNotExist)
+	})
+}
+
 func assertStrings(t *testing.T, result, expectedResult string) {
 	t.Helper()
 	if result != expectedResult {

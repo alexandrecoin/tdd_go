@@ -1,12 +1,11 @@
 package main
 
-import "errors"
-
 type Dictionary map[string]string
 
 const (
 	ErrNotFound = ErrDictionary("Could not find the word you are looking for.")
 	ErrWordExists = ErrDictionary("This entry already exists")
+	ErrWordDoesNotExist = ErrDictionary("This entry does not exist. Can't update.")
 )
 
 type ErrDictionary string
@@ -35,5 +34,20 @@ func (d Dictionary) AddEntry(entry, definition string) error {
 		return err
 	}
 
+	return nil
+}
+
+func (d Dictionary) UpdateEntry(entry, newDefinition string) error{
+	_, err := d.Search(entry)
+
+	switch err {
+	case ErrNotFound:
+		return ErrWordDoesNotExist
+	case nil:
+		d[entry] = newDefinition
+	default:
+		return err	
+	}
+	
 	return nil
 }
