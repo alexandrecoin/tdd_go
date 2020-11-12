@@ -48,6 +48,10 @@ func (d Dictionary) UpdateEntry(entry, newDefinition string) error{
 	default:
 		return err	
 	}
-	
+
 	return nil
+}
+
+func (d Dictionary) DeleteEntry(entry string) {
+	delete(d, entry)
 }
