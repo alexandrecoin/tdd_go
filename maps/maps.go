@@ -1,18 +1,17 @@
 package main
 
 type Dictionary map[string]string
+type ErrDictionary string
+
+func (e ErrDictionary) Error() string {
+	return string(e)
+}
 
 const (
 	ErrNotFound = ErrDictionary("Could not find the word you are looking for.")
 	ErrWordExists = ErrDictionary("This entry already exists")
 	ErrWordDoesNotExist = ErrDictionary("This entry does not exist. Can't update.")
 )
-
-type ErrDictionary string
-
-func (e ErrDictionary) Error() string {
-	return string(e)
-}
 
 func (d Dictionary) Search(entry string) (string, error) {
 	definition, isWordFound := d[entry]
